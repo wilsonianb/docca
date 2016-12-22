@@ -169,6 +169,42 @@ overload(int arg1, int arg2);
 void
 overload(int arg1, int arg2, int arg3);
 
+/** Markdown examples
+
+    @par List
+
+    1. Lists with extra long lines that can *span* multiple lines
+    and overflow even the longest of buffers.
+    2. With Numbers
+        + Or not
+            + Nesting
+                1. Deeply
+        + And returning `here`.
+
+    Another list I enjoy:
+
+    -# 1
+        - 1.a
+            -# 1.a.1
+            -# 1.a.2
+        - 1.b
+    -# 2
+        - 2.a
+        - 2.b
+            -# 2.b.1
+            -# 2.b.2
+                - 2.b.2.a
+                - 2.b.2.b
+
+    @par Table
+
+    First Header  | Second Header
+    ------------- | -------------
+    Content Cell  | Content Cell
+    Content Cell  | Content Cell
+*/
+void markdown();
+
 //------------------------------------------------------------------------------
 
 namespace detail {
@@ -808,6 +844,7 @@ void func();
 struct class_type
 {
 };
+
 
 } // other
 

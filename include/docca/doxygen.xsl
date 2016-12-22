@@ -56,6 +56,22 @@
 
 <!--========== Utilities ==========-->
 
+<!-- 4 spaces used for indentation -->
+<xsl:variable name="tabspaces">
+<xsl:text>    </xsl:text>
+</xsl:variable>
+
+<!-- Indent the current line with count number of tabspaces -->
+<xsl:template name="indent">
+  <xsl:param name="count"/>
+  <xsl:if test="$count &gt; 0">
+    <xsl:value-of select="$tabspaces"/>
+    <xsl:call-template name="indent">
+      <xsl:with-param name="count" select="$count - 1"/>
+    </xsl:call-template>
+  </xsl:if>
+</xsl:template>
+
 <!-- Remove the top-most namespace from identifier -->
 <xsl:template name="strip-one-ns">
   <xsl:param name="name"/>
@@ -396,13 +412,34 @@
   <xsl:text>`</xsl:text>
 </xsl:template>
 
+
+<!-- Ensure the list starts on its own line -->
+<xsl:template match="orderedlist | itemizedlist" mode="markup">
+  <xsl:value-of select="$newline" />
+  <xsl:apply-templates mode="markup"/>
+</xsl:template>
+
+<!-- Properly format a list item to ensure proper nesting and styling -->
 <xsl:template match="listitem" mode="markup">
-  <xsl:text>* </xsl:text>
-  <xsl:call-template name="strip-leading-whitespace">
-    <xsl:with-param name="text">
-      <xsl:apply-templates mode="markup"/>
-    </xsl:with-param>
+  <!-- The first listitem in a group was put on a newline by the 
+       rule above, so only indent the later siblings -->
+  <xsl:if test="position() &gt; 1">
+    <xsl:value-of select="$newline" />
+  </xsl:if>
+  <!-- Indent the listitem based on the list nesting level -->
+  <xsl:call-template name="indent">
+     <xsl:with-param name="count" select="count(ancestor::orderedlist | ancestor::itemizedlist )-1" />
   </xsl:call-template>
+  <xsl:if test="parent::orderedlist">
+    <xsl:text># </xsl:text>
+  </xsl:if>
+  <xsl:if test="parent::itemizedlist">
+    <xsl:text>* </xsl:text>
+  </xsl:if>
+  <!-- Doxygen injects a <para></para> element around the listitem contents
+       so this rule extracts the contents and formats that directly to avoid
+       introducing extra newlines from formating para -->
+  <xsl:apply-templates select="para/node()" mode="markup"/>
 </xsl:template>
 
 <xsl:template match="bold" mode="markup">[*<xsl:apply-templates mode="markup"/>]</xsl:template>
@@ -441,6 +478,24 @@
   <xsl:text>&#xd;  ]]&#xd;</xsl:text>
 </xsl:template>
 
+<!-- Table support -->
+<xsl:template match="table" mode="markup">
+   <xsl:text>&#xd;[table  &#xd;</xsl:text>
+   <xsl:apply-templates mode="markup"/>
+   <xsl:text>]&#xd;</xsl:text>
+</xsl:template>
+
+<xsl:template match="row" mode="markup">
+   <xsl:text>    [</xsl:text>
+   <xsl:apply-templates mode="markup"/>
+   <xsl:text>]&#xd;</xsl:text>
+</xsl:template>
+
+<xsl:template match="entry" mode="markup">
+   <xsl:text>[</xsl:text>
+   <xsl:apply-templates select="para/node()" mode="markup"/>
+   <xsl:text>]</xsl:text>
+</xsl:template>
 
 
 <xsl:template match="simplesect" mode="markup">
