@@ -417,11 +417,12 @@
 <xsl:template match="orderedlist | itemizedlist" mode="markup">
   <xsl:value-of select="$newline" />
   <xsl:apply-templates mode="markup"/>
+  <xsl:value-of select="$newline" />
 </xsl:template>
 
 <!-- Properly format a list item to ensure proper nesting and styling -->
 <xsl:template match="listitem" mode="markup">
-  <!-- The first listitem in a group was put on a newline by the 
+  <!-- The first listitem in a group was put on a newline by the
        rule above, so only indent the later siblings -->
   <xsl:if test="position() &gt; 1">
     <xsl:value-of select="$newline" />
