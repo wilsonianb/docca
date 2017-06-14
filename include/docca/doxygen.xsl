@@ -879,12 +879,9 @@
 
 <xsl:template name="includes">
   <xsl:param name="file"/>
-  <xsl:value-of select="$newline"/>
-  <xsl:text>[heading Header]&#xd;</xsl:text>
-  <xsl:text>`#include &lt;</xsl:text>
-  <!--<xsl:value-of select="substring-after($file, 'include/')"/>-->
-  <xsl:value-of select="$file"/>
-  <xsl:text>&gt;`&#xd;&#xd;</xsl:text>
+  <xsl:text>&#xd;</xsl:text>
+<!-- INCLUDES_TEMPLATE -->
+  <xsl:text>&#xd;</xsl:text>
 </xsl:template>
 
 
