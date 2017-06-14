@@ -1520,6 +1520,7 @@
     </xsl:variable>
     <xsl:variable name="name" select="name"/>
     <xsl:for-each select="/doxygen/compounddef[@id=$class-refid]">
+<!-- VFALCO This looks like it was for debugging?
 <xsl:value-of select="concat($class-name, '::', $name)"/><xsl:text>&#xd;&#xd;</xsl:text>
 <xsl:value-of select="compoundname"/><xsl:text>&#xd;&#xd;</xsl:text>
 <xsl:variable name="ref-id">
@@ -1528,6 +1529,7 @@
   </xsl:call-template>
 </xsl:variable>
 <xsl:value-of select="$ref-id"/><xsl:text>&#xd;&#xd;</xsl:text>
+-->
       <xsl:call-template name="class-tables">
         <xsl:with-param name="class-name">
           <xsl:value-of select="concat($class-name, '::', $name)"/>
