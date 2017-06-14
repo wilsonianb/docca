@@ -910,7 +910,7 @@
   <xsl:value-of select="$class-name"/>
   <xsl:text>]&#xd;</xsl:text>
   <xsl:apply-templates select="briefdescription" mode="markup"/>
-  <xsl:text>[heading Synopsis]</xsl:text>
+  <xsl:text>&#xd;[heading Synopsis]&#xd;</xsl:text>
   <xsl:call-template name="includes">
     <xsl:with-param name="file" select="$class-file"/>
   </xsl:call-template>
@@ -939,7 +939,7 @@
     <xsl:with-param name="class-name" select="$class-name"/>
     <xsl:with-param name="class-id" select="$class-id"/>
   </xsl:call-template>
-  <xsl:text>[heading Description]&#xd;</xsl:text>
+  <xsl:text>&#xd;[heading Description]&#xd;</xsl:text>
   <xsl:apply-templates select="detaileddescription" mode="markup"/>
   <xsl:call-template name="class-members">
     <xsl:with-param name="class-name" select="$class-name"/>
@@ -1455,7 +1455,7 @@
     <xsl:text>]&#xd;</xsl:text>
   </xsl:if>
   <xsl:apply-templates select="briefdescription" mode="markup"/>
-  <xsl:text>[heading Synopsis]</xsl:text>
+  <xsl:text>&#xd;[heading Synopsis]&#xd;</xsl:text>
   <!-- <xsl:if test="@kind='typedef' or @kind='friend'">-->
   <xsl:if test="@kind='friend'">
     <xsl:call-template name="includes">
@@ -1487,7 +1487,7 @@
       <xsl:text>```&#xd;</xsl:text>
     </xsl:when>
   </xsl:choose>
-  <xsl:text>[heading Description]&#xd;</xsl:text>
+  <xsl:text>&#xd;[heading Description]&#xd;</xsl:text>
   <xsl:apply-templates select="detaileddescription" mode="markup"/>
   <xsl:choose>
     <xsl:when test="$overload-count &gt; 1 and $overload-position = $overload-count">
@@ -1812,7 +1812,7 @@
     <xsl:text>]&#xd;</xsl:text>
   </xsl:if>
   <xsl:apply-templates select="briefdescription" mode="markup"/>
-  <xsl:text>[heading Synopsis]&#xd;</xsl:text>
+  <xsl:text>&#xd;[heading Synopsis]&#xd;</xsl:text>
   <xsl:if test="$overload-count = 1">
     <xsl:call-template name="includes">
       <xsl:with-param name="file" select="location/@file"/>
@@ -1838,7 +1838,7 @@
       <xsl:text>&#xd;```&#xd;</xsl:text>
     </xsl:when>
   </xsl:choose>
-  <xsl:text>[heading Description]&#xd;</xsl:text>
+  <xsl:text>&#xd;[heading Description]&#xd;</xsl:text>
   <xsl:apply-templates select="detaileddescription" mode="markup"/>
   <xsl:if test="$debug &gt; 1">
     <xsl:text>[heading Debug]&#xd;[table [[name][value]]</xsl:text>
