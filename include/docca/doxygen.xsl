@@ -910,7 +910,11 @@
   <xsl:value-of select="$class-name"/>
   <xsl:text>]&#xd;</xsl:text>
   <xsl:apply-templates select="briefdescription" mode="markup"/>
-  <xsl:text>[heading Synopsis]&#xd;```&#xd;</xsl:text>
+  <xsl:text>[heading Synopsis]</xsl:text>
+  <xsl:call-template name="includes">
+    <xsl:with-param name="file" select="$class-file"/>
+  </xsl:call-template>
+  <xsl:text>&#xd;```&#xd;</xsl:text>
   <xsl:apply-templates select="templateparamlist" mode="class-detail"/>
   <xsl:value-of select="@kind"/>
   <xsl:text> </xsl:text>
@@ -937,9 +941,6 @@
   </xsl:call-template>
   <xsl:text>[heading Description]&#xd;</xsl:text>
   <xsl:apply-templates select="detaileddescription" mode="markup"/>
-  <xsl:call-template name="includes">
-    <xsl:with-param name="file" select="$class-file"/>
-  </xsl:call-template>
   <xsl:call-template name="class-members">
     <xsl:with-param name="class-name" select="$class-name"/>
     <xsl:with-param name="class-id" select="$class-id"/>
@@ -1454,6 +1455,11 @@
   </xsl:if>
   <xsl:apply-templates select="briefdescription" mode="markup"/>
   <xsl:text>[heading Synopsis]</xsl:text>
+  <xsl:if test="@kind='typedef' or @kind='friend'">
+    <xsl:call-template name="includes">
+      <xsl:with-param name="file" select="$class-file"/>
+    </xsl:call-template>
+  </xsl:if>
   <xsl:choose>
     <xsl:when test="@kind='typedef'">
       <xsl:call-template name="typedef" mode="class-detail">
@@ -1481,11 +1487,6 @@
   </xsl:choose>
   <xsl:text>[heading Description]&#xd;</xsl:text>
   <xsl:apply-templates select="detaileddescription" mode="markup"/>
-  <xsl:if test="@kind='typedef' or @kind='friend'">
-    <xsl:call-template name="includes">
-      <xsl:with-param name="file" select="$class-file"/>
-    </xsl:call-template>
-  </xsl:if>
   <xsl:choose>
     <xsl:when test="$overload-count &gt; 1 and $overload-position = $overload-count">
       <xsl:text>[endsect]&#xd;[endsect]&#xd;&#xd;</xsl:text>
@@ -1754,6 +1755,9 @@
         <xsl:apply-templates select="briefdescription" mode="markup"/>
       </xsl:otherwise>
     </xsl:choose>
+    <xsl:call-template name="includes">
+      <xsl:with-param name="file" select="location/@file"/>
+    </xsl:call-template>
     <xsl:text>```&#xd;</xsl:text>
     <xsl:for-each select="../memberdef[name = $unqualified-name]">
       <xsl:variable name="stripped-type">
@@ -1780,9 +1784,6 @@
     <xsl:for-each select="/doxygen/compounddef[@kind='group' and compoundname=$name]">
       <xsl:apply-templates select="detaileddescription" mode="markup"/>
     </xsl:for-each>
-    <xsl:call-template name="includes">
-      <xsl:with-param name="file" select="location/@file"/>
-    </xsl:call-template>
   </xsl:if>
   <xsl:if test="$overload-count = 1">
     <xsl:text>[section:</xsl:text>
@@ -1810,6 +1811,11 @@
   </xsl:if>
   <xsl:apply-templates select="briefdescription" mode="markup"/>
   <xsl:text>[heading Synopsis]&#xd;</xsl:text>
+  <xsl:if test="$overload-count = 1">
+    <xsl:call-template name="includes">
+      <xsl:with-param name="file" select="location/@file"/>
+    </xsl:call-template>
+  </xsl:if>
   <xsl:choose>
     <xsl:when test="@kind='typedef'">
       <xsl:call-template name="typedef">
@@ -1832,11 +1838,6 @@
   </xsl:choose>
   <xsl:text>[heading Description]&#xd;</xsl:text>
   <xsl:apply-templates select="detaileddescription" mode="markup"/>
-  <xsl:if test="$overload-count = 1">
-    <xsl:call-template name="includes">
-      <xsl:with-param name="file" select="location/@file"/>
-    </xsl:call-template>
-  </xsl:if>
   <xsl:if test="$debug &gt; 1">
     <xsl:text>[heading Debug]&#xd;[table [[name][value]]</xsl:text>
     <xsl:value-of select="concat('[[name][', $name, ']]&#xd;')"/>
