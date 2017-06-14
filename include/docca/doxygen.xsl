@@ -924,7 +924,7 @@
   <xsl:value-of select="$class-name"/>
   <xsl:text>]&#xd;</xsl:text>
   <xsl:apply-templates select="briefdescription" mode="markup"/>
-  <xsl:text>&#xd;[heading Synopsis1]&#xd;</xsl:text>
+  <xsl:text>&#xd;[heading Synopsis]&#xd;</xsl:text>
   <xsl:call-template name="includes">
     <xsl:with-param name="file" select="$class-file"/>
   </xsl:call-template>
@@ -1496,7 +1496,7 @@
     <xsl:text>]&#xd;</xsl:text>
   </xsl:if>
   <xsl:apply-templates select="briefdescription" mode="markup"/>
-  <xsl:text>&#xd;[heading Synopsis2]&#xd;</xsl:text>
+  <xsl:text>&#xd;[heading Synopsis]&#xd;</xsl:text>
   <xsl:if test="@kind='friend'">
     <xsl:call-template name="includes">
       <xsl:with-param name="file" select="$class-file"/>
@@ -1869,7 +1869,7 @@
     <xsl:text>]&#xd;</xsl:text>
   </xsl:if>
   <xsl:apply-templates select="briefdescription" mode="markup"/>
-  <xsl:text>&#xd;[heading Synopsis3]&#xd;</xsl:text>
+  <xsl:text>&#xd;[heading Synopsis]&#xd;</xsl:text>
   <xsl:if test="$overload-count &gt;= 1">
     <xsl:call-template name="includes">
       <xsl:with-param name="file" select="location/@file"/>
