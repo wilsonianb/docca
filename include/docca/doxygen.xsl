@@ -1586,10 +1586,12 @@
     <xsl:text>[heading Values]&#xd;</xsl:text>
     <xsl:text>[table [[Name][Description]]&#xd;</xsl:text>
     <xsl:for-each select="enumvalue">
-      <xsl:text>  [[</xsl:text>
+      <xsl:text>  [[[^</xsl:text>
       <xsl:value-of select="name"/>
-      <xsl:text>]&#xd;   [</xsl:text>
+      <xsl:text>]][</xsl:text>
       <xsl:value-of select="briefdescription"/>
+      <xsl:text>&#xd;&#xd;</xsl:text>
+      <xsl:value-of select="detaileddescription"/>
       <xsl:text>]]&#xd;</xsl:text>
     </xsl:for-each>
     <xsl:text>]&#xd;</xsl:text>
@@ -1747,9 +1749,11 @@
     <xsl:text>[indexterm1 </xsl:text>
     <xsl:value-of select="$display-name"/>
     <xsl:text>]&#xd;</xsl:text>
+    <!-- VFALCO But each overload could be in a different file!
     <xsl:call-template name="includes">
       <xsl:with-param name="file" select="location/@file"/>
     </xsl:call-template>
+    -->
     <xsl:choose>
       <xsl:when test="count(/doxygen/compounddef[@kind='group' and compoundname=$name]) &gt; 0">
         <xsl:for-each select="/doxygen/compounddef[@kind='group' and compoundname=$name]">
@@ -1821,7 +1825,7 @@
   </xsl:if>
   <xsl:apply-templates select="briefdescription" mode="markup"/>
   <xsl:text>&#xd;[heading Synopsis]&#xd;</xsl:text>
-  <xsl:if test="$overload-count = 1">
+  <xsl:if test="$overload-count >= 1">
     <xsl:call-template name="includes">
       <xsl:with-param name="file" select="location/@file"/>
     </xsl:call-template>
