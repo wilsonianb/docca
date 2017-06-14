@@ -889,6 +889,16 @@
 </xsl:template>
 
 
+
+<xsl:template name="includes-foot">
+  <xsl:param name="file"/>
+  <xsl:text>&#xd;</xsl:text>
+<!-- INCLUDES_FOOT_TEMPLATE -->
+  <xsl:text>&#xd;</xsl:text>
+</xsl:template>
+
+
+
 <!--========== Class ==========-->
 
 <xsl:template name="class">
@@ -914,7 +924,7 @@
   <xsl:value-of select="$class-name"/>
   <xsl:text>]&#xd;</xsl:text>
   <xsl:apply-templates select="briefdescription" mode="markup"/>
-  <xsl:text>&#xd;[heading Synopsis]&#xd;</xsl:text>
+  <xsl:text>&#xd;[heading Synopsis1]&#xd;</xsl:text>
   <xsl:call-template name="includes">
     <xsl:with-param name="file" select="$class-file"/>
   </xsl:call-template>
@@ -949,6 +959,9 @@
     <xsl:with-param name="class-name" select="$class-name"/>
     <xsl:with-param name="class-id" select="$class-id"/>
     <xsl:with-param name="class-file" select="$class-file"/>
+  </xsl:call-template>
+  <xsl:call-template name="includes-foot">
+    <xsl:with-param name="file" select="$class-file"/>
   </xsl:call-template>
 <xsl:text>[endsect]&#xd;&#xd;&#xd;&#xd;</xsl:text>
 </xsl:template>
@@ -1483,7 +1496,7 @@
     <xsl:text>]&#xd;</xsl:text>
   </xsl:if>
   <xsl:apply-templates select="briefdescription" mode="markup"/>
-  <xsl:text>&#xd;[heading Synopsis]&#xd;</xsl:text>
+  <xsl:text>&#xd;[heading Synopsis2]&#xd;</xsl:text>
   <xsl:if test="@kind='friend'">
     <xsl:call-template name="includes">
       <xsl:with-param name="file" select="$class-file"/>
@@ -1516,6 +1529,11 @@
   </xsl:choose>
   <xsl:text>&#xd;[heading Description]&#xd;</xsl:text>
   <xsl:apply-templates select="detaileddescription" mode="markup"/>
+  <xsl:if test="@kind='friend'">
+    <xsl:call-template name="includes-foot">
+      <xsl:with-param name="file" select="$class-file"/>
+    </xsl:call-template>
+  </xsl:if>
   <xsl:choose>
     <xsl:when test="$overload-count &gt; 1 and $overload-position = $overload-count">
       <xsl:text>[endsect]&#xd;[endsect]&#xd;&#xd;</xsl:text>
@@ -1851,7 +1869,7 @@
     <xsl:text>]&#xd;</xsl:text>
   </xsl:if>
   <xsl:apply-templates select="briefdescription" mode="markup"/>
-  <xsl:text>&#xd;[heading Synopsis]&#xd;</xsl:text>
+  <xsl:text>&#xd;[heading Synopsis3]&#xd;</xsl:text>
   <xsl:if test="$overload-count &gt;= 1">
     <xsl:call-template name="includes">
       <xsl:with-param name="file" select="location/@file"/>
@@ -1893,6 +1911,11 @@
       </xsl:if>
     </xsl:otherwise>
   </xsl:choose>
+  <xsl:if test="$overload-count &gt;= 1">
+    <xsl:call-template name="includes-foot">
+      <xsl:with-param name="file" select="location/@file"/>
+    </xsl:call-template>
+  </xsl:if>
   <xsl:choose>
     <xsl:when test="$overload-count &gt; 1 and $overload-position = $overload-count">
       <xsl:text>[endsect]&#xd;[endsect]&#xd;&#xd;&#xd;&#xd;</xsl:text>
