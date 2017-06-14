@@ -829,9 +829,13 @@
       <xsl:variable name="dox-compound-name" select="($memberdefs)[1]/../../compoundname"/>
       <xsl:variable name="dox-name" select="($memberdefs)[1]/name"/>
       <xsl:variable name="ref-name">
+        <!--
         <xsl:call-template name="strip-doc-ns">
           <xsl:with-param name="name" select="$dox-compound-name"/>
         </xsl:call-template>
+        Replace with the line below
+        -->
+        <xsl:value-of select="$dox-compound-name"/>
       </xsl:variable>
       <xsl:variable name="ref-id">
         <xsl:call-template name="make-id">
