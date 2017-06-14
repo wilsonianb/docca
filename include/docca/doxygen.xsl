@@ -1746,7 +1746,10 @@
     <xsl:text>]&#xd;</xsl:text>
     <xsl:text>[indexterm1 </xsl:text>
     <xsl:value-of select="$display-name"/>
-    <xsl:text>]</xsl:text>
+    <xsl:text>]&#xd;</xsl:text>
+    <xsl:call-template name="includes">
+      <xsl:with-param name="file" select="location/@file"/>
+    </xsl:call-template>
     <xsl:choose>
       <xsl:when test="count(/doxygen/compounddef[@kind='group' and compoundname=$name]) &gt; 0">
         <xsl:for-each select="/doxygen/compounddef[@kind='group' and compoundname=$name]">
@@ -1757,11 +1760,16 @@
         <xsl:apply-templates select="briefdescription" mode="markup"/>
       </xsl:otherwise>
     </xsl:choose>
-    <xsl:call-template name="includes">
-      <xsl:with-param name="file" select="location/@file"/>
-    </xsl:call-template>
     <xsl:text>```&#xd;</xsl:text>
     <xsl:for-each select="../memberdef[name = $unqualified-name]">
+      <xsl:if test="position() &gt; 1">
+        <xsl:text>&#xd;</xsl:text>
+        <xsl:if test=" not(briefdescription = preceding-sibling::*/briefdescription)">
+          <xsl:text>```&#xd;</xsl:text>
+          <xsl:apply-templates select="briefdescription" mode="markup"/>
+          <xsl:text>```&#xd;</xsl:text>
+        </xsl:if>
+      </xsl:if>
       <xsl:variable name="stripped-type">
         <xsl:call-template name="cleanup-type">
           <xsl:with-param name="name" select="type"/>
@@ -1780,7 +1788,7 @@
       <xsl:value-of select="name"/>
       <xsl:text>]``(</xsl:text>
       <xsl:apply-templates select="param" mode="class-detail"/>
-      <xsl:text>);&#xd;&#xd;</xsl:text>
+      <xsl:text>);&#xd;</xsl:text>
     </xsl:for-each>
     <xsl:text>```&#xd;</xsl:text>
     <xsl:for-each select="/doxygen/compounddef[@kind='group' and compoundname=$name]">
