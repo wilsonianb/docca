@@ -1439,11 +1439,12 @@
   <xsl:if test="not(starts-with($doxygen-id, ../../@id))">
     <xsl:variable name="inherited-from" select="/doxygen/compounddef[starts-with($doxygen-id, @id)]/compoundname"/>
     <xsl:if test="not(contains($inherited-from, '::detail'))">
-      <xsl:text>['Inherited from </xsl:text>
+      <xsl:text>(Inherited from `</xsl:text>
+      <!-- VFALCO Make this a link -->
       <xsl:call-template name="strip-doc-ns">
         <xsl:with-param name="name" select="$inherited-from"/>
       </xsl:call-template>
-      <xsl:text>.]&#xd;</xsl:text>
+      <xsl:text>`)&#xd;&#xd;</xsl:text>
     </xsl:if>
   </xsl:if>
   <xsl:if test="$overload-count = 1">
@@ -1455,7 +1456,8 @@
   </xsl:if>
   <xsl:apply-templates select="briefdescription" mode="markup"/>
   <xsl:text>[heading Synopsis]</xsl:text>
-  <xsl:if test="@kind='typedef' or @kind='friend'">
+  <!-- <xsl:if test="@kind='typedef' or @kind='friend'">-->
+  <xsl:if test="@kind='friend'">
     <xsl:call-template name="includes">
       <xsl:with-param name="file" select="$class-file"/>
     </xsl:call-template>
