@@ -1098,8 +1098,7 @@
     </xsl:for-each>
     <xsl:text>]&#xd;</xsl:text>
   </xsl:if>
-  <xsl:if test="count(sectiondef[@kind='private-func' or @kind='protected-private-func']) &gt; 0 and
-      $private &gt; 0">
+  <xsl:if test="count(sectiondef[@kind='private-func' or @kind='protected-private-func']) &gt; 0 and $private &gt; 0">
     <xsl:text>[heading Private Member Functions]&#xd;</xsl:text>
     <xsl:text>[table [[Name][Description]]&#xd;</xsl:text>
     <xsl:for-each select="sectiondef[@kind='private-func']/memberdef" mode="class-table">
@@ -1292,28 +1291,53 @@
 <xsl:param name="class-name"/>
 <xsl:param name="class-id"/>
 <xsl:param name="class-file"/>
-<xsl:apply-templates select="sectiondef[
-    @kind='public-type' or
-    @kind='public-func' or
-    @kind='public-static-func' or
-    @kind='public-attrib' or
-    @kind='public-static-attrib' or
-    @kind='protected-func' or
-    @kind='protected-static-func' or
-    @kind='protected-attrib' or
-    @kind='protected-static-attrib' or
-    @kind='private-func' or
-    @kind='protected-private-func' or
-    @kind='private-attrib' or
-    @kind='private-static-attrib' or
-    @kind='friend' or
-    @kind='related'
-    ]/memberdef[not(type = 'friend class') and not(contains(name, '_helper'))]" mode="class-detail">
-  <xsl:sort select="name"/>
-  <xsl:with-param name="class-name" select="$class-name"/>
-  <xsl:with-param name="class-id" select="$class-id"/>
-  <xsl:with-param name="class-file" select="$class-file"/>
-</xsl:apply-templates>
+<xsl:choose>
+  <xsl:when test="$private &gt; 0">
+    <xsl:apply-templates select="sectiondef[
+        @kind='public-type' or
+        @kind='public-func' or
+        @kind='public-static-func' or
+        @kind='public-attrib' or
+        @kind='public-static-attrib' or
+        @kind='protected-func' or
+        @kind='protected-static-func' or
+        @kind='protected-attrib' or
+        @kind='protected-static-attrib' or
+        @kind='private-func' or
+        @kind='protected-private-func' or
+        @kind='private-attrib' or
+        @kind='private-static-attrib' or
+        @kind='friend' or
+        @kind='related'
+        ]/memberdef[not(type = 'friend class') and not(contains(name, '_helper'))]" mode="class-detail">
+      <xsl:sort select="name"/>
+      <xsl:with-param name="class-name" select="$class-name"/>
+      <xsl:with-param name="class-id" select="$class-id"/>
+      <xsl:with-param name="class-file" select="$class-file"/>
+    </xsl:apply-templates>
+  </xsl:when>
+  <xsl:otherwise>
+    <xsl:apply-templates select="sectiondef[
+        @kind='public-type' or
+        @kind='public-func' or
+        @kind='public-static-func' or
+        @kind='public-attrib' or
+        @kind='public-static-attrib' or
+        @kind='protected-func' or
+        @kind='protected-static-func' or
+        @kind='protected-attrib' or
+        @kind='protected-static-attrib' or
+        @kind='protected-private-func' or
+        @kind='friend' or
+        @kind='related'
+        ]/memberdef[not(type = 'friend class') and not(contains(name, '_helper'))]" mode="class-detail">
+      <xsl:sort select="name"/>
+      <xsl:with-param name="class-name" select="$class-name"/>
+      <xsl:with-param name="class-id" select="$class-id"/>
+      <xsl:with-param name="class-file" select="$class-file"/>
+    </xsl:apply-templates>
+  </xsl:otherwise>
+</xsl:choose>
 <xsl:if test="$class-name = 'io_service::service'">
   <xsl:apply-templates select="sectiondef[@kind='private-func']/memberdef[not(type = 'friend class') and not(contains(name, '_helper'))]" mode="class-detail">
     <xsl:sort select="name"/>
@@ -1456,7 +1480,6 @@
   </xsl:if>
   <xsl:apply-templates select="briefdescription" mode="markup"/>
   <xsl:text>&#xd;[heading Synopsis]&#xd;</xsl:text>
-  <!-- <xsl:if test="@kind='typedef' or @kind='friend'">-->
   <xsl:if test="@kind='friend'">
     <xsl:call-template name="includes">
       <xsl:with-param name="file" select="$class-file"/>
@@ -1825,7 +1848,7 @@
   </xsl:if>
   <xsl:apply-templates select="briefdescription" mode="markup"/>
   <xsl:text>&#xd;[heading Synopsis]&#xd;</xsl:text>
-  <xsl:if test="$overload-count >= 1">
+  <xsl:if test="$overload-count &gt;= 1">
     <xsl:call-template name="includes">
       <xsl:with-param name="file" select="location/@file"/>
     </xsl:call-template>
