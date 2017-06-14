@@ -1576,7 +1576,7 @@
 </xsl:template>
 
 
-
+<!-- Variable at namespace scope -->
 <xsl:template name="variable">
   <xsl:text>```&#xd;</xsl:text>
   <xsl:if test="@static='yes'">
@@ -1863,32 +1863,36 @@
         <xsl:with-param name="class-name" select="$name"/>
       </xsl:call-template>
     </xsl:when>
-    <xsl:when test="@kind='variable'">
-      <xsl:call-template name="variable"/>
-    </xsl:when>
-    <xsl:when test="@kind='enum'">
-      <xsl:call-template name="enum">
-        <xsl:with-param name="enum-name" select="$name"/>
-      </xsl:call-template>
-    </xsl:when>
-    <xsl:when test="@kind='function'">
-      <xsl:text>&#xd;```&#xd;</xsl:text>
-      <xsl:call-template name="function"/>
-      <xsl:text>&#xd;```&#xd;</xsl:text>
-    </xsl:when>
+    <xsl:otherwise>
+      <xsl:choose>
+        <xsl:when test="@kind='variable'">
+          <xsl:call-template name="variable"/>
+        </xsl:when>
+        <xsl:when test="@kind='enum'">
+          <xsl:call-template name="enum">
+            <xsl:with-param name="enum-name" select="$name"/>
+          </xsl:call-template>
+        </xsl:when>
+        <xsl:when test="@kind='function'">
+          <xsl:text>&#xd;```&#xd;</xsl:text>
+          <xsl:call-template name="function"/>
+          <xsl:text>&#xd;```&#xd;</xsl:text>
+        </xsl:when>
+      </xsl:choose>
+      <xsl:text>&#xd;[heading Description]&#xd;</xsl:text>
+      <xsl:apply-templates select="detaileddescription" mode="markup"/>
+      <xsl:if test="$debug &gt; 1">
+        <xsl:text>[heading Debug]&#xd;[table [[name][value]]</xsl:text>
+        <xsl:value-of select="concat('[[name][', $name, ']]&#xd;')"/>
+        <xsl:value-of select="concat('[[display-name][', $display-name, ']]&#xd;')"/>
+        <xsl:value-of select="concat('[[unqualified-name][', $unqualified-name, ']]&#xd;')"/>
+        <xsl:value-of select="concat('[[id][', $id, ']]&#xd;')"/>
+        <xsl:value-of select="concat('[[doxygen-id][', $doxygen-id, ']]&#xd;')"/>
+        <xsl:value-of select="concat('[[overload-count][', $overload-count, ']]&#xd;')"/>
+        <xsl:value-of select="concat('[[overload-position][', $overload-position, ']]]&#xd;')"/>
+      </xsl:if>
+    </xsl:otherwise>
   </xsl:choose>
-  <xsl:text>&#xd;[heading Description]&#xd;</xsl:text>
-  <xsl:apply-templates select="detaileddescription" mode="markup"/>
-  <xsl:if test="$debug &gt; 1">
-    <xsl:text>[heading Debug]&#xd;[table [[name][value]]</xsl:text>
-    <xsl:value-of select="concat('[[name][', $name, ']]&#xd;')"/>
-    <xsl:value-of select="concat('[[display-name][', $display-name, ']]&#xd;')"/>
-    <xsl:value-of select="concat('[[unqualified-name][', $unqualified-name, ']]&#xd;')"/>
-    <xsl:value-of select="concat('[[id][', $id, ']]&#xd;')"/>
-    <xsl:value-of select="concat('[[doxygen-id][', $doxygen-id, ']]&#xd;')"/>
-    <xsl:value-of select="concat('[[overload-count][', $overload-count, ']]&#xd;')"/>
-    <xsl:value-of select="concat('[[overload-position][', $overload-position, ']]]&#xd;')"/>
-  </xsl:if>
   <xsl:choose>
     <xsl:when test="$overload-count &gt; 1 and $overload-position = $overload-count">
       <xsl:text>[endsect]&#xd;[endsect]&#xd;&#xd;&#xd;&#xd;</xsl:text>
